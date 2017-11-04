@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# Special thanks to : Thebunni
+
 """Scripted agents."""
 
 from __future__ import absolute_import
@@ -46,19 +48,42 @@ _HAL_ZEALOT = actions.FUNCTIONS.Hallucination_Zealot_quick.id
 _FORCE_FIELD = actions.FUNCTIONS.Effect_ForceField_screen.id
 _GUARD_FIELD = actions.FUNCTIONS.Effect_GuardianShield_quick.id
 
-class SentryForceField(base_agent.BaseAgent):
-  """An agent specifically for solving the ForceField map."""
+class HallucinationArchon(base_agent.BaseAgent):
+  """An agent specifically for solving the HallucinIce map with Archon Unit."""
 
   def step(self, obs):
-    super(SentryForceField, self).step(obs)
-    if _ATTACK_SCREEN in obs.observation["available_actions"]:
+    super(HallucinationArchon, self).step(obs)
+    if _HAL_ARCHON in obs.observation["available_actions"]:
       player_relative = obs.observation["screen"][_PLAYER_RELATIVE]
-      hydralisk_y, hydralisk_x = (player_relative == _PLAYER_HOSTILE).nonzero()
-      if not hydralisk_y.any():
+      hellion_y, hellion_x = (player_relative == _PLAYER_HOSTILE).nonzero()
+      if not hellion_y.any():
         return actions.FunctionCall(_NO_OP, [])
-      index = numpy.argmax(hydralisk_y)
-      target = [hydralisk_x[index], hydralisk_y[index]]
-      return actions.FunctionCall(_FORCE_FIELD, [_NOT_QUEUED, target])
+      index = numpy.argmax(hellion_y)
+      target = [hellion_x[index], hellion_y[index]]
+      return actions.FunctionCall(_HAL_ARCHON, [_NOT_QUEUED])
+    elif _SELECT_ARMY in obs.observation["available_actions"]:
+      return actions.FunctionCall(_SELECT_ARMY, [_SELECT_ALL])
+    else:
+      return actions.FunctionCall(_NO_OP, [])
+    
+Hallucinations = [_HAL_ADEPT, _HAL_ARCHON, _HAL_DISRUP, _HAL_HIGTEM, _HAL_IMN, _HAL_PHOENIX, _HAL_STALKER, _HAL_VOIDRAID, _HAL_ZEALOT]
+
+class Hallucination(base_agent.BaseAgent):
+  """An agent specifically for solving the HallucinIce map with Random Hallucination."""
+
+  def step(self, obs):
+    test = random.randrange(0, len(Hallucinations) - 1)
+    super(Hallucination, self).step(obs)
+    if Hallucinations[test] in obs.observation["available_actions"]:
+      player_relative = obs.observation["screen"][_PLAYER_RELATIVE]
+      hellion_y, hellion_x = (player_relative == _PLAYER_HOSTILE).nonzero()
+      if not hellion_y.any():
+        return actions.FunctionCall(_NO_OP, [])
+      index = numpy.argmax(hellion_y)
+      target = [hellion_x[index], hellion_y[index]]
+      print( random.randrange(0, len(Hallucinations)))
+      
+      return actions.FunctionCall(Hallucinations[test], [_NOT_QUEUED])
     elif _SELECT_ARMY in obs.observation["available_actions"]:
       return actions.FunctionCall(_SELECT_ARMY, [_SELECT_ALL])
     else:
