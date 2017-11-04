@@ -11,7 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# Special thanks to : Thebunni
+# Special thanks to : jmathison
+#                     Thebunni
 #                     Alekahpwn
 
 """Scripted agents."""
@@ -54,6 +55,11 @@ class HallucinationArchon(base_agent.BaseAgent):
 
   def step(self, obs):
     super(HallucinationArchon, self).step(obs)
+    
+    score_general = obs.observation["score_cumulative"][[0]]
+    value_units = obs.observation["score_cumulative"][[3]]
+    kill_value_units = obs.observation["score_cumulative"][[5]]
+    
     if _HAL_ARCHON in obs.observation["available_actions"]:
       player_relative = obs.observation["screen"][_PLAYER_RELATIVE]
       hellion_y, hellion_x = (player_relative == _PLAYER_HOSTILE).nonzero()
@@ -64,6 +70,7 @@ class HallucinationArchon(base_agent.BaseAgent):
       return actions.FunctionCall(_HAL_ARCHON, [_NOT_QUEUED])
     elif _SELECT_ARMY in obs.observation["available_actions"]:
       return actions.FunctionCall(_SELECT_ARMY, [_SELECT_ALL])
+      print("score general is %(score_general)" %{
     else:
       return actions.FunctionCall(_NO_OP, [])
     
