@@ -15,5 +15,14 @@
 Talk, HallucinIce mini game and scripted agent for AI workshop ( Blizzard+Deepmind ) Blizzcon 2017
 
 
+![alt tag](https://github.com/SoyGema/pysc2_Talk/blob/master/images/Reinforced_learning_paradigma.gif)
+Reinforcement learning is based on learning though the interaction with the environment given a specific goal. 
+
+Reinforcement Learning goal is to find the policy that maximices the reward.
+In RL definition we find Markov Decision Proecesses as the design and conceptual implementation. Shown bellow is the perception-action-learning-loop
+The environment interacts with the agent in a given state, and thanks to the policy it returns the best possible action 
+![alt tag](https://github.com/SoyGema/pysc2_Talk/blob/master/images/RL_perception_action_learning.gif)
+
+
 This is the result of the scripted agent running in HallucinIce SC2 map with Archon unit 
 ![alt tag](https://github.com/SoyGema/pysc2_Talk/blob/master/images/HallucinIceArchon.gif)
